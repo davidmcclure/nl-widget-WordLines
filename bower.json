@@ -1,0 +1,7 @@
+{
+    "name": "NeatlineWordLines"
+  , "version": "0.0.1"
+  , "dependencies": {
+      "d3": ">= v3.2.8"
+  }
+}

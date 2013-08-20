@@ -26,9 +26,15 @@ module.exports = function(grunt) {
   grunt.initConfig({
 
     shell: {
+
       options: {
         stdout: true
       },
+
+      bower: {
+        command: 'bower install'
+      },
+
       phpunit: {
         command: 'phpunit --color',
         options: {
@@ -37,6 +43,7 @@ module.exports = function(grunt) {
           }
         }
       }
+
     },
 
     symlink: {
@@ -59,20 +66,16 @@ module.exports = function(grunt) {
     },
 
     clean: {
-      payloads: [
-        paths.payloads.shared.js,
-        paths.payloads.shared.css
-      ],
-      fixtures: [
-        paths.jasmine+'/fixtures/*.json',
-        paths.jasmine+'/fixtures/*.html'
-      ],
+      payloads: paths.payloads.shared.js,
       pkg: './pkg'
     },
 
     concat: {
       text: {
-        src: paths.src.shared+'/*.js',
+        src: [
+          paths.vendor.js.d3,
+          paths.src.shared+'/*.js'
+        ],
         dest: paths.payloads.shared.js+'/lines-public.js'
       }
     },
@@ -125,14 +128,13 @@ module.exports = function(grunt) {
   // Build the application.
   grunt.registerTask('build', [
     'clean',
+    'shell:bower',
     'symlink',
     'compile'
   ]);
 
-  // Assemble static assets.
   grunt.registerTask('compile', [
-    'concat',
-    'stylus'
+    'concat'
   ]);
 
   // Assemble/min static assets.
