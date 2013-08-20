@@ -8,15 +8,13 @@
  * @license     http://www.apache.org/licenses/LICENSE-2.0.html
  */
 
+Neatline.module('Lines', function(
+  Lines, Neatline, Backbone, Marionette, $, _) {
 
-[data-neatline-slug]
-  background lighten(black, 90%)
-  cursor pointer
-  padding 0 5px
 
-  &.highlighted
-    background lighten(yellow, 50%)
+  Lines.View = Backbone.View.extend({
+    // TODO
+  });
 
-  &.selected
-    background #0080bb
-    color white
+
+});

@@ -3,7 +3,7 @@
 
 /**
  * @package     neatline
- * @subpackage  text
+ * @subpackage  word-lines
  * @copyright   2012 Rector and Board of Visitors, University of Virginia
  * @license     http://www.apache.org/licenses/LICENSE-2.0.html
  */
@@ -13,9 +13,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-clean');
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-uglify');
-  grunt.loadNpmTasks('grunt-contrib-stylus');
   grunt.loadNpmTasks('grunt-contrib-watch');
-  grunt.loadNpmTasks('grunt-contrib-jasmine');
   grunt.loadNpmTasks('grunt-contrib-compress');
   grunt.loadNpmTasks('grunt-contrib-connect');
   grunt.loadNpmTasks('grunt-symbolic-link');
@@ -86,54 +84,18 @@ module.exports = function(grunt) {
       }
     },
 
-    stylus: {
-      compile: {
-        files: {
-          './views/shared/css/payloads/lines-public.css':
-            paths.stylus.shared+'/*.styl'
-        }
-      }
-    },
-
     watch: {
       payload: {
-        files: [
-          '<%= concat.text.src %>',
-          paths.stylus.shared+'/**/*.styl'
-        ],
-        tasks: ['compile']
+        files: '<%= concat.text.src %>',
+        tasks: 'compile'
       }
-    },
-
-    jasmine: {
-
-      options: {
-        helpers: [
-          './Neatline/'+nlPaths.vendor.js.jasmine_jquery,
-          './Neatline/'+nlPaths.vendor.js.sinon,
-          './Neatline/'+nlPaths.jasmine+'/helpers/*.js',
-          './Neatline/'+nlPaths.jasmine+'/assertions/*.js',
-          paths.jasmine+'/helpers/*.js'
-        ]
-      },
-
-      neatline: {
-        src: [
-          './Neatline/'+nlPaths.payloads.shared.js+'/neatline-public.js',
-          paths.payloads.shared.js+'/lines-public.js'
-        ],
-        options: {
-          specs: paths.jasmine+'/unit/**/*.spec.js'
-        }
-      }
-
     },
 
     compress: {
 
       dist: {
         options: {
-          archive: 'pkg/NeatlineText-'+pkg.version+'.zip'
+          archive: 'pkg/NeatlineWordLines-'+pkg.version+'.zip'
         },
         dest: 'NeatlineText/',
         src: [
