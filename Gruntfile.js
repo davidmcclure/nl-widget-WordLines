@@ -17,16 +17,25 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-compress');
   grunt.loadNpmTasks('grunt-contrib-connect');
   grunt.loadNpmTasks('grunt-symbolic-link');
+  grunt.loadNpmTasks('grunt-bower-task');
 
-  var pkg     = grunt.file.readJSON('./package.json')
+  var pkg     = grunt.file.readJSON('package.json')
   var nlPaths = grunt.file.readJSON('../Neatline/paths.json');
-  var paths   = grunt.file.readJSON('./paths.json');
+  var paths   = grunt.file.readJSON('paths.json');
 
   grunt.initConfig({
 
+    bower: {
+      install: {
+        options: {
+          copy: false
+        }
+      }
+    },
+
     symlink: {
       neatline: {
-        link: './Neatline',
+        link: 'Neatline',
         target: '../Neatline',
         options: {
           overwrite: true
@@ -34,18 +43,9 @@ module.exports = function(grunt) {
       }
     },
 
-    connect: {
-      server: {
-        options: {
-          keepalive: true,
-          port: 1337
-        }
-      }
-    },
-
     clean: {
       payloads: paths.payloads.shared.js,
-      pkg: './pkg'
+      pkg: 'pkg'
     },
 
     concat: {
@@ -68,7 +68,7 @@ module.exports = function(grunt) {
     watch: {
       payload: {
         files: '<%= concat.lines.src %>',
-        tasks: 'compile'
+        tasks: 'concat'
       }
     },
 
@@ -106,39 +106,14 @@ module.exports = function(grunt) {
   // Build the application.
   grunt.registerTask('build', [
     'clean',
-    'shell:bower',
     'symlink',
+    'bower',
     'compile'
-  ]);
-
-  grunt.registerTask('compile', [
-    'concat'
-  ]);
-
-  // Assemble/min static assets.
-  grunt.registerTask('compile:min', [
-    'uglify',
-    'stylus'
-  ]);
-
-  // Run all tests.
-  grunt.registerTask('test', [
-    'clean:fixtures',
-    'shell:phpunit',
-    'jasmine'
-  ]);
-
-  // Run PHPUnit.
-  grunt.registerTask('phpunit', 'shell:phpunit');
-
-  // Mount Jasmine suite.
-  grunt.registerTask('jasmine:server', [
-    'jasmine:neatline:build',
-    'connect'
   ]);
 
   // Spawn release package.
   grunt.registerTask('package', [
+    'uglify',
     'clean:pkg',
     'compress'
   ]);
