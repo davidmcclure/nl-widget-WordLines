@@ -17,34 +17,12 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-compress');
   grunt.loadNpmTasks('grunt-contrib-connect');
   grunt.loadNpmTasks('grunt-symbolic-link');
-  grunt.loadNpmTasks('grunt-shell');
 
   var pkg     = grunt.file.readJSON('./package.json')
   var nlPaths = grunt.file.readJSON('../Neatline/paths.json');
   var paths   = grunt.file.readJSON('./paths.json');
 
   grunt.initConfig({
-
-    shell: {
-
-      options: {
-        stdout: true
-      },
-
-      bower: {
-        command: 'bower install'
-      },
-
-      phpunit: {
-        command: 'phpunit --color',
-        options: {
-          execOptions: {
-            cwd: './tests/phpunit'
-          }
-        }
-      }
-
-    },
 
     symlink: {
       neatline: {
@@ -71,7 +49,7 @@ module.exports = function(grunt) {
     },
 
     concat: {
-      text: {
+      lines: {
         src: [
           paths.vendor.js.d3,
           paths.src.shared+'/*.js'
@@ -82,14 +60,14 @@ module.exports = function(grunt) {
 
     uglify: {
       text: {
-        src: '<%= concat.text.src %>',
+        src: '<%= concat.lines.src %>',
         dest: paths.payloads.shared.js+'/lines-public.js'
       }
     },
 
     watch: {
       payload: {
-        files: '<%= concat.text.src %>',
+        files: '<%= concat.lines.src %>',
         tasks: 'compile'
       }
     },

@@ -13,6 +13,7 @@ Neatline.module('Lines', function(
 
 
   /**
+   * TODO|dev
    * Render line on `highlight`.
    *
    * @param {Object} args: Event arguments.

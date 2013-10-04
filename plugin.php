@@ -10,11 +10,11 @@
  */
 
 
-if (!defined('NL_TEXT_DIR')) {
-    define('NL_TEXT_DIR', dirname(__FILE__));
+if (!defined('NL_LINES_DIR')) {
+    define('NL_LINES_DIR', dirname(__FILE__));
 }
 
-require_once NL_TEXT_DIR . '/NeatlineTextPlugin.php';
+require_once NL_LINES_DIR . '/NeatlineWordLinesPlugin.php';
 
-$text = new NeatlineTextPlugin();
-$text->setUp();
+$lines = new NeatlineWordLinesPlugin();
+$lines->setUp();
