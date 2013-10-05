@@ -45,6 +45,7 @@ module.exports = function(grunt) {
 
     clean: {
       payloads: paths.payloads.shared.js,
+      bower: '/bower_components',
       pkg: 'pkg'
     },
 
@@ -86,6 +87,7 @@ module.exports = function(grunt) {
           '!.git/**',
           '!package.json',
           '!node_modules/**',
+          '!bower_components/**',
           '!.grunt/**',
           '!Gruntfile.js',
           '!paths.json',
@@ -99,9 +101,6 @@ module.exports = function(grunt) {
     }
 
   });
-
-  // Run tests.
-  grunt.registerTask('default', 'test');
 
   // Build the application.
   grunt.registerTask('build', [
