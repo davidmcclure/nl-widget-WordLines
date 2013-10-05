@@ -16,7 +16,7 @@ Neatline.module('Lines', function(
 
 
   Lines.addInitializer(function() {
-    // TODO
+    Lines.__view = new Neatline.Lines.View();
   });
 
 

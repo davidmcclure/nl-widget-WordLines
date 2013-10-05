@@ -13,7 +13,28 @@ Neatline.module('Lines', function(
 
 
   Lines.View = Backbone.View.extend({
-    // TODO
+
+
+    tagName: 'svg',
+    id: 'word-line',
+
+
+    /**
+     * Render the line.
+     */
+    show: function() {
+      $('body').append(this.$el);
+    },
+
+
+    /**
+     * Hide the line.
+     */
+    hide: function() {
+      this.$el.detach();
+    }
+
+
   });
 
 
