@@ -15,6 +15,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-contrib-compress');
+  grunt.loadNpmTasks('grunt-contrib-stylus');
   grunt.loadNpmTasks('grunt-contrib-connect');
   grunt.loadNpmTasks('grunt-symbolic-link');
   grunt.loadNpmTasks('grunt-bower-task');
@@ -44,8 +45,11 @@ module.exports = function(grunt) {
     },
 
     clean: {
-      payloads: paths.payloads.shared.js,
-      bower: '/bower_components',
+      payloads: [
+        paths.payloads.shared.js,
+        paths.payloads.shared.css
+      ],
+      bower: 'bower_components',
       pkg: 'pkg'
     },
 
@@ -66,10 +70,22 @@ module.exports = function(grunt) {
       }
     },
 
+    stylus: {
+      compile: {
+        files: {
+          'views/shared/css/payloads/lines-public.css':
+            paths.stylus.shared+'/*.styl'
+        }
+      }
+    },
+
     watch: {
       payload: {
-        files: '<%= concat.lines.src %>',
-        tasks: 'concat'
+        files: [
+          '<%= concat.lines.src %>',
+          paths.stylus.shared+'/**/*.styl'
+        ],
+        tasks: 'compile'
       }
     },
 
@@ -108,6 +124,18 @@ module.exports = function(grunt) {
     'symlink',
     'bower',
     'compile'
+  ]);
+
+  // Assemble static assets.
+  grunt.registerTask('compile', [
+    'concat',
+    'stylus'
+  ]);
+
+  // Assemble/min static assets.
+  grunt.registerTask('compile:min', [
+    'uglify',
+    'stylus'
   ]);
 
   // Spawn release package.

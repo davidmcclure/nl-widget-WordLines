@@ -35,6 +35,7 @@ class NeatlineWordLinesPlugin extends Omeka_Plugin_AbstractPlugin
     public function hookNeatlinePublicStatic($args)
     {
         if ($args['exhibit']->hasWidget(self::ID)) {
+            queue_css_file('payloads/lines-public');
             queue_js_file('payloads/lines-public');
         }
     }
