@@ -1,5 +1,5 @@
 
-/* vim: set expandtab tabstop=2 shiftwidth=2 softtabstop=2 cc=76; */
+/* vim: set expandtab tabstop=2 shiftwidth=2 softtabstop=2 cc=80; */
 
 /**
  * @package     neatline
@@ -19,7 +19,15 @@ Neatline.module('Lines', function(
    * @param {Object} args: Event arguments.
    */
   var highlight = function(args) {
-    // TODO
+
+    // Did the event originate on the map or text?
+    if (args.source == 'MAP' || args.source == 'TEXT') {
+
+      // Try to get a vector layer for the model.
+      console.log(Neatline.Map.__view.layers.vector[args.model.id]);
+
+    }
+
   };
   Neatline.commands.setHandler(Lines.ID+':highlight', highlight);
   Neatline.vent.on('highlight', highlight);
