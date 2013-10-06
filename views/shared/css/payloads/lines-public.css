@@ -1,3 +1,3 @@
 #word-line{position:fixed;pointer-events:none;top:0;left:0;}
 #word-line svg{position:fixed;top:0;left:0;}
-#word-line svg line{stroke:#999}
+#word-line svg line{stroke:#000;stroke-dasharray:2,2}

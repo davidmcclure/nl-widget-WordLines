@@ -9018,12 +9018,33 @@ Neatline.module('Lines', function(
 
 
   /**
+   * TODO|dev
    * Render line on `highlight`.
    *
    * @param {Object} args: Event arguments.
    */
   var highlight = function(args) {
-    Lines.__view.show(0, 0, 1000, 1000);
+
+    // Did the event originate on the map or text?
+    if (_.contains(['MAP', 'TEXT'], args.source)) {
+
+      // Get the map centroid.
+      var layer = Neatline.Map.__view.layers.vector[args.model.id];
+      var lonlat = layer.getDataExtent().getCenterLonLat();
+      var center = layer.getViewPortPxFromLonLat(lonlat);
+
+      // Get the text centroid.
+      var slug = args.model.get('slug');
+      var span = Neatline.Text.__view.getSpansWithSlug(slug);
+      var offset = span.offset();
+      var x = offset.left+span.width()/2;
+      var y = offset.top+span.height()/2;
+
+      // Render the line.
+      Lines.__view.show(x, y, center.x, center.y);
+
+    }
+
   };
   Neatline.commands.setHandler(Lines.ID+':highlight', highlight);
   Neatline.vent.on('highlight', highlight);
@@ -9039,6 +9060,7 @@ Neatline.module('Lines', function(
   };
   Neatline.commands.setHandler(Lines.ID+':unhighlight', unhighlight);
   Neatline.vent.on('unhighlight', unhighlight);
+  Neatline.vent.on('select', unhighlight);
 
 
 });
@@ -9068,7 +9090,6 @@ Neatline.module('Lines', function(
      */
     initialize: function() {
       this.svg = d3.select(this.el).append('svg:svg');
-      this.body = $('body');
     },
 
 
@@ -9082,15 +9103,15 @@ Neatline.module('Lines', function(
      */
     show: function(x1, y1, x2, y2) {
 
-      var h = this.body.height();
-      var w = this.body.width();
+      var h = $(window).height();
+      var w = $(window).width();
 
       // Inject/fit the containers.
-      this.$el.appendTo(this.body).css({ width: w, height: h });
+      this.$el.appendTo($('body')).css({ width: w, height: h });
       this.svg.attr('width', w).attr('height', h);
 
       // Render the line.
-      this.svg.append('svg:line').attr({
+      this.line = this.svg.append('svg:line').attr({
         x1: x1, y1: y1, x2: x2, y2: y2
       });
 
@@ -9101,8 +9122,8 @@ Neatline.module('Lines', function(
      * Hide the line.
      */
     hide: function() {
+      this.svg.selectAll('line').remove();
       this.$el.detach();
-      this.svg.empty();
     }
 
 

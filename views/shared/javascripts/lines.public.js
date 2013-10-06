@@ -13,12 +13,33 @@ Neatline.module('Lines', function(
 
 
   /**
+   * TODO|dev
    * Render line on `highlight`.
    *
    * @param {Object} args: Event arguments.
    */
   var highlight = function(args) {
-    Lines.__view.show(0, 0, 1000, 1000);
+
+    // Did the event originate on the map or text?
+    if (_.contains(['MAP', 'TEXT'], args.source)) {
+
+      // Get the map centroid.
+      var layer = Neatline.Map.__view.layers.vector[args.model.id];
+      var lonlat = layer.getDataExtent().getCenterLonLat();
+      var center = layer.getViewPortPxFromLonLat(lonlat);
+
+      // Get the text centroid.
+      var slug = args.model.get('slug');
+      var span = Neatline.Text.__view.getSpansWithSlug(slug);
+      var offset = span.offset();
+      var x = offset.left+span.width()/2;
+      var y = offset.top+span.height()/2;
+
+      // Render the line.
+      Lines.__view.show(x, y, center.x, center.y);
+
+    }
+
   };
   Neatline.commands.setHandler(Lines.ID+':highlight', highlight);
   Neatline.vent.on('highlight', highlight);
@@ -34,6 +55,7 @@ Neatline.module('Lines', function(
   };
   Neatline.commands.setHandler(Lines.ID+':unhighlight', unhighlight);
   Neatline.vent.on('unhighlight', unhighlight);
+  Neatline.vent.on('select', unhighlight);
 
 
 });
