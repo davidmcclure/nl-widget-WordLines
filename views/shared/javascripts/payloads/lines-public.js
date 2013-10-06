@@ -9023,7 +9023,7 @@ Neatline.module('Lines', function(
    * @param {Object} args: Event arguments.
    */
   var highlight = function(args) {
-    Lines.__view.show();
+    Lines.__view.show(0, 0, 1000, 1000);
   };
   Neatline.commands.setHandler(Lines.ID+':highlight', highlight);
   Neatline.vent.on('highlight', highlight);
@@ -9060,15 +9060,40 @@ Neatline.module('Lines', function(
   Lines.View = Backbone.View.extend({
 
 
-    tagName: 'svg',
     id: 'word-line',
 
 
     /**
-     * Render the line.
+     * Construct the SVG container.
      */
-    show: function() {
-      $('body').append(this.$el);
+    initialize: function() {
+      this.svg = d3.select(this.el).append('svg:svg');
+      this.body = $('body');
+    },
+
+
+    /**
+     * Render the line.
+     *
+     * @param {Number} x1
+     * @param {Number} y1
+     * @param {Number} x2
+     * @param {Number} y2
+     */
+    show: function(x1, y1, x2, y2) {
+
+      var h = this.body.height();
+      var w = this.body.width();
+
+      // Inject/fit the containers.
+      this.$el.appendTo(this.body).css({ width: w, height: h });
+      this.svg.attr('width', w).attr('height', h);
+
+      // Render the line.
+      this.svg.append('svg:line').attr({
+        x1: x1, y1: y1, x2: x2, y2: y2
+      });
+
     },
 
 
@@ -9077,6 +9102,7 @@ Neatline.module('Lines', function(
      */
     hide: function() {
       this.$el.detach();
+      this.svg.empty();
     }
 
 

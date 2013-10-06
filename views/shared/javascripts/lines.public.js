@@ -18,7 +18,7 @@ Neatline.module('Lines', function(
    * @param {Object} args: Event arguments.
    */
   var highlight = function(args) {
-    Lines.__view.show();
+    Lines.__view.show(0, 0, 1000, 1000);
   };
   Neatline.commands.setHandler(Lines.ID+':highlight', highlight);
   Neatline.vent.on('highlight', highlight);
