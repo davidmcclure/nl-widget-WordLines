@@ -12,50 +12,57 @@ Neatline.module('Lines', function(
   Lines, Neatline, Backbone, Marionette, $, _) {
 
 
-  /**
-   * TODO|dev
-   * Render line on `highlight`.
-   *
-   * @param {Object} args: Event arguments.
-   */
-  var highlight = function(args) {
-
-    // Did the event originate on the map or text?
-    if (_.contains(['MAP', 'TEXT'], args.source)) {
-
-      // Get the map centroid.
-      var layer = Neatline.Map.__view.layers.vector[args.model.id];
-      var lonlat = layer.getDataExtent().getCenterLonLat();
-      var center = layer.getViewPortPxFromLonLat(lonlat);
-
-      // Get the text centroid.
-      var slug = args.model.get('slug');
-      var span = Neatline.Text.__view.getSpansWithSlug(slug);
-      var offset = span.offset();
-      var x = offset.left+span.width()/2;
-      var y = offset.top+span.height()/2;
-
-      // Render the line.
-      Lines.__view.show(x, y, center.x, center.y);
-
-    }
-
-  };
-  Neatline.commands.setHandler(Lines.ID+':highlight', highlight);
-  Neatline.vent.on('highlight', highlight);
+  Lines.addInitializer(function() {
 
 
-  /**
-   * Render line on `highlight`.
-   *
-   * @param {Object} args: Event arguments.
-   */
-  var unhighlight = function(args) {
-    Lines.__view.hide();
-  };
-  Neatline.commands.setHandler(Lines.ID+':unhighlight', unhighlight);
-  Neatline.vent.on('unhighlight', unhighlight);
-  Neatline.vent.on('select', unhighlight);
+    /**
+     * Render line on `highlight`.
+     *
+     * @param {Object} args: Event arguments.
+     */
+    var highlight = function(args) {
+
+      // Did the event originate on the map or text?
+      if (_.contains(['MAP', 'TEXT'], args.source)) {
+
+        // Get the vector geometry centroid.
+        var layer = Neatline.request('MAP:getVectorLayer', args.model);
+        var lonlat = layer.getDataExtent().getCenterLonLat();
+        var center = layer.getViewPortPxFromLonLat(lonlat);
+
+        // Get the text span and offset.
+        var span = Neatline.request('TEXT:getSpans', args.model);
+        var offset = span.offset();
+
+        // Compute the text centroid.
+        var x = offset.left+span.width()/2;
+        var y = offset.top+span.height()/2;
+
+        // Render the line.
+        Lines.__view.show(x, y, center.x, center.y);
+
+      }
+
+    };
+    Neatline.commands.setHandler(Lines.ID+':highlight', highlight);
+    Neatline.vent.on('highlight', highlight);
+
+
+    /**
+     * Render line on `highlight`.
+     *
+     * @param {Object} args: Event arguments.
+     */
+    var unhighlight = function(args) {
+      Lines.__view.hide();
+    };
+    Neatline.commands.setHandler(Lines.ID+':unhighlight', unhighlight);
+    Neatline.vent.on('unhighlight', unhighlight);
+    Neatline.vent.on('select', unhighlight);
+    Neatline.vent.on('MAP:move', unhighlight);
+
+
+  });
 
 
 });
