@@ -16,6 +16,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-contrib-compress');
   grunt.loadNpmTasks('grunt-contrib-stylus');
+  grunt.loadNpmTasks('grunt-contrib-jasmine');
   grunt.loadNpmTasks('grunt-contrib-connect');
   grunt.loadNpmTasks('grunt-symbolic-link');
   grunt.loadNpmTasks('grunt-bower-task');
@@ -40,6 +41,15 @@ module.exports = function(grunt) {
         target: '../Neatline',
         options: {
           overwrite: true
+        }
+      }
+    },
+
+    connect: {
+      server: {
+        options: {
+          keepalive: true,
+          port: 1337
         }
       }
     },
@@ -87,6 +97,30 @@ module.exports = function(grunt) {
         ],
         tasks: 'compile'
       }
+    },
+
+    jasmine: {
+
+      options: {
+        template: 'Neatline/'+nlPaths.jasmine+'/runner.tmpl',
+        helpers: [
+          'Neatline/'+nlPaths.vendor.js.jasmine_jquery,
+          'Neatline/'+nlPaths.vendor.js.sinon,
+          'Neatline/'+nlPaths.jasmine+'/helpers/*.js',
+          'Neatline/'+nlPaths.jasmine+'/assertions/*.js'
+        ]
+      },
+
+      neatline: {
+        src: [
+          'Neatline/'+nlPaths.payloads.shared.js+'/neatline-public.js',
+          paths.payloads.shared.js+'/lines-public.js'
+        ],
+        options: {
+          specs: paths.jasmine+'/unit/**/*.spec.js'
+        }
+      }
+
     },
 
     compress: {
