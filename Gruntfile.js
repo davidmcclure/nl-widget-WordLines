@@ -99,29 +99,29 @@ module.exports = function(grunt) {
       }
     },
 
-    jasmine: {
+    //jasmine: {
 
-      options: {
-        template: 'Neatline/'+nlPaths.jasmine+'/runner.tmpl',
-        helpers: [
-          'Neatline/'+nlPaths.vendor.js.jasmine_jquery,
-          'Neatline/'+nlPaths.vendor.js.sinon,
-          'Neatline/'+nlPaths.jasmine+'/helpers/*.js',
-          'Neatline/'+nlPaths.jasmine+'/assertions/*.js'
-        ]
-      },
+      //options: {
+        //template: 'Neatline/'+nlPaths.jasmine+'/runner.tmpl',
+        //helpers: [
+          //'Neatline/'+nlPaths.vendor.js.jasmine_jquery,
+          //'Neatline/'+nlPaths.vendor.js.sinon,
+          //'Neatline/'+nlPaths.jasmine+'/helpers/*.js',
+          //'Neatline/'+nlPaths.jasmine+'/assertions/*.js'
+        //]
+      //},
 
-      neatline: {
-        src: [
-          'Neatline/'+nlPaths.payloads.shared.js+'/neatline-public.js',
-          paths.payloads.shared.js+'/lines-public.js'
-        ],
-        options: {
-          specs: paths.jasmine+'/unit/**/*.spec.js'
-        }
-      }
+      //neatline: {
+        //src: [
+          //'Neatline/'+nlPaths.payloads.shared.js+'/neatline-public.js',
+          //paths.payloads.shared.js+'/lines-public.js'
+        //],
+        //options: {
+          //specs: paths.jasmine+'/unit/**/*.spec.js'
+        //}
+      //}
 
-    },
+    //},
 
     compress: {
 

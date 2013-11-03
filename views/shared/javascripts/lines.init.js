@@ -8,15 +8,11 @@
  * @license     http://www.apache.org/licenses/LICENSE-2.0.html
  */
 
-Neatline.module('Lines', function(
-  Lines, Neatline, Backbone, Marionette, $, _) {
-
-
-  Lines.ID = 'LINES';
+Neatline.module('Lines', function(Lines) {
 
 
   Lines.addInitializer(function() {
-    Lines.__view = new Neatline.Lines.View();
+    Lines.__controller = new Neatline.Lines.Controller();
   });
 
 

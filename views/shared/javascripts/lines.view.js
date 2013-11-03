@@ -8,8 +8,7 @@
  * @license     http://www.apache.org/licenses/LICENSE-2.0.html
  */
 
-Neatline.module('Lines', function(
-  Lines, Neatline, Backbone, Marionette, $, _) {
+Neatline.module('Lines', function(Lines) {
 
 
   Lines.View = Backbone.View.extend({
