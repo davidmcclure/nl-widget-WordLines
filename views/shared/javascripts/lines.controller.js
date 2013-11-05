@@ -77,9 +77,7 @@ Neatline.module('Lines', function(Lines) {
      */
     unhighlight: function(args) {
       this.view.hide();
-    },
-    //Neatline.vent.on('select', unhighlight);
-    //Neatline.vent.on('MAP:move', unhighlight);
+    }
 
 
   });
