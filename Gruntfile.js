@@ -28,14 +28,17 @@ module.exports = function(grunt) {
   grunt.initConfig({
 
     bower: {
+
       install: {
         options: {
           copy: false
         }
       }
+
     },
 
     symlink: {
+
       neatline: {
         link: 'Neatline',
         target: '../Neatline',
@@ -43,27 +46,35 @@ module.exports = function(grunt) {
           overwrite: true
         }
       }
+
     },
 
     connect: {
+
       server: {
         options: {
           keepalive: true,
           port: 1337
         }
       }
+
     },
 
     clean: {
+
       payloads: [
         paths.payloads.shared.js,
         paths.payloads.shared.css
       ],
+
       bower: 'bower_components',
+
       pkg: 'pkg'
+
     },
 
     concat: {
+
       lines: {
         src: [
           paths.vendor.js.d3,
@@ -71,25 +82,29 @@ module.exports = function(grunt) {
         ],
         dest: paths.payloads.shared.js+'/lines-public.js'
       }
+
     },
 
     uglify: {
-      text: {
+
+      lines: {
         src: '<%= concat.lines.src %>',
         dest: paths.payloads.shared.js+'/lines-public.js'
       }
+
     },
 
     stylus: {
-      compile: {
-        files: {
-          'views/shared/css/payloads/lines-public.css':
-            paths.stylus.shared+'/*.styl'
-        }
+
+      lines: {
+        src: paths.stylus.shared+'/*.styl',
+        dest: paths.payloads.shared.css+'/lines-public.css'
       }
+
     },
 
     watch: {
+
       payload: {
         files: [
           '<%= concat.lines.src %>',
@@ -97,31 +112,8 @@ module.exports = function(grunt) {
         ],
         tasks: 'compile'
       }
+
     },
-
-    //jasmine: {
-
-      //options: {
-        //template: 'Neatline/'+nlPaths.jasmine+'/runner.tmpl',
-        //helpers: [
-          //'Neatline/'+nlPaths.vendor.js.jasmine_jquery,
-          //'Neatline/'+nlPaths.vendor.js.sinon,
-          //'Neatline/'+nlPaths.jasmine+'/helpers/*.js',
-          //'Neatline/'+nlPaths.jasmine+'/assertions/*.js'
-        //]
-      //},
-
-      //neatline: {
-        //src: [
-          //'Neatline/'+nlPaths.payloads.shared.js+'/neatline-public.js',
-          //paths.payloads.shared.js+'/lines-public.js'
-        //],
-        //options: {
-          //specs: paths.jasmine+'/unit/**/*.spec.js'
-        //}
-      //}
-
-    //},
 
     compress: {
 
@@ -134,15 +126,29 @@ module.exports = function(grunt) {
 
           '**',
 
+          // GIT
           '!.git/**',
+
+          // BOWER
+          '!bower.json',
+          '!bower_components/**',
+
+          // NPM
           '!package.json',
           '!node_modules/**',
-          '!bower_components/**',
+
+          // GRUNT
           '!.grunt/**',
           '!Gruntfile.js',
           '!paths.json',
+
+          // SYMLINK
           '!Neatline/**',
+
+          // DIST
           '!pkg/**',
+
+          // TESTS
           '!tests/**'
 
         ]
