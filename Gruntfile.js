@@ -110,7 +110,7 @@ module.exports = function(grunt) {
           '<%= concat.lines.src %>',
           paths.stylus.shared+'/**/*.styl'
         ],
-        tasks: 'compile'
+        tasks: 'compile:min'
       }
 
     },
